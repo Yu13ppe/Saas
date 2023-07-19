@@ -1,0 +1,38 @@
+{
+  "background_color":"#ffffff",
+  "categories": ["productivity","navigation","travel"],
+  "description":"The best way to get around town",
+  "dir":"ltr",
+  "display_override":["standalone","fullscreen"],
+  "display":"standalone",
+  "icons":[
+    {
+      "src":"Wolftein-icon-192.png",
+      "sizes":"192x192",
+      "type":"image/png"
+    },
+    {
+      "src":"Wolftein-icon-384.png",
+      "sizes":"384x384",
+      "type":"image/png"
+    },
+    {
+      "src":"Wolftein-icon-512.png",
+      "sizes":"512x512",
+      "type":"image/png"
+    },
+    {
+      "src":"Wolftein-icon-1024.png",
+      "sizes":"1024x1024",
+      "type":"image/png"
+    }
+  ],
+  "lang":"es",
+  "name":"Farmacia Saas",
+  "orientation":"portrait",
+  "prefer_related_applications":false,
+  "scope":"/",
+  "short_name":"Saas",
+  "start_url":"/",
+  "theme_color":"#ffffff"
+}
