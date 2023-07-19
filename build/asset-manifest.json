@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/static/css/main.7b0552b8.css",
+    "main.js": "/static/js/main.08822d8c.js",
+    "service-worker.js": "/service-worker.js",
+    "static/media/logosaas.svg": "/static/media/logosaas.44645ae3937b51a233cfd99d9477f74e.svg",
+    "index.html": "/index.html",
+    "main.7b0552b8.css.map": "/static/css/main.7b0552b8.css.map",
+    "main.08822d8c.js.map": "/static/js/main.08822d8c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7b0552b8.css",
+    "static/js/main.08822d8c.js"
+  ]
+}
