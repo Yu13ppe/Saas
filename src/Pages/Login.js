@@ -1,27 +1,58 @@
-import React from 'react'
+import React, {useState} from 'react'
 import SaasLogo from '../Assets/Images/logosaas.svg'
+import { useHistory } from "react-router-dom";
+import { Alert } from 'reactstrap';
 
 function Login() {
+    const history = useHistory();
+    const [attemps, setAttemps] = useState(3);
+    const [error, setError] = useState("");
+    const [user, setUser] = useState("");
+
+    const handleSubmit = (e) => {
+        e.preventDefault(); // Previene el comportamiento predeterminado del formulario
+
+        if (attemps === 0) {
+            setError("Has superado el número de intentos. Intenta más tarde.");
+        }
+        else if (user === 'empleado@saas.com') {
+            // Si se encuentra el usuario, cambia de ventana
+            history.push({
+                pathname: "/Inventario",
+            });
+        }
+        else if (user === 'gerente@saas.com') {
+            // Si se encuentra el usuario, cambia de ventana
+            history.push({
+                pathname: "/Inventario-G",
+            });
+        }
+        else {
+            // Si no se encuentra el usuario, establece un mensaje de error
+            setAttemps(attemps - 1);
+            setError(`Correo incorrecto. Inténtalo de nuevo. Intentos restantes: ${attemps}`);
+        }
+    };
+
     return (
         <div className='login'>
-            <form >
+            <form onSubmit={handleSubmit}>
                 <img src={SaasLogo} alt="Sass" className="logo" />
+                {error && <Alert color="danger">{error}</Alert>}
                 <div className='form-control'>
                     <label htmlFor="email">Email</label>
-                    <input type="email" placeholder='empleado@saas.com / gerente@saas.com'
-                    // onChange={(e) => setEmail(e.target.value)} 
+                    <input 
+                    type="email" 
+                    placeholder='empleado@saas.com / gerente@saas.com' 
+                    onChange={(e) => setUser(e.target.value)}
                     />
                     <br />
                     <label htmlFor="password">Password</label>
-                    <input type="password" placeholder='Password'
-                    // onChange={(e) => setPassword(e.target.value)} 
-                    />
-                    <button className='btn'
-                    // disabled={loading} onClick={() => console.log(errorMessage)}
-                    >Login
+                    <input type="password" placeholder='Password' />
+                    <button type="submit" className='btn'>
+                        Login
                     </button>
                 </div>
-                {/* {errorMessage && <div className="alert alert-danger mt-2"><p className="text-center">No autorizado</p></div>} */}
             </form>
         </div>
     )
