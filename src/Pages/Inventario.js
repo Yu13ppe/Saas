@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import QR from '../Assets/Images/QR-JP.png';
 import {
   Button,
+  Alert,
   Modal,
   ModalHeader,
   ModalBody,
@@ -10,6 +11,7 @@ import {
   Input,
   Col,
   Card,
+  ButtonGroup,
   CardBody,
   CardSubtitle,
   CardTitle,
@@ -18,6 +20,10 @@ import {
   PopoverHeader,
   PopoverBody
 } from 'reactstrap';
+import { Link } from "react-router-dom";
+import { XYPlot, XAxis, YAxis, VerticalBarSeries } from 'react-vis';
+// import { Bar } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 
 function Inventario() {
   const [nombre, setNombre] = useState('');
@@ -28,14 +34,17 @@ function Inventario() {
   const [id_farmaceuta, setFarmaceuta] = useState(Number);
 
   const [tipos, setTipos] = useState([]);
-  const [tipo, setNewType] = useState('')
-  const [selectModal, setSelectModal] = useState([])
+  const [tipo, setNewType] = useState('');
+  const [selectModal, setSelectModal] = useState([]);
 
   const [product, setProducts] = useState([]);
 
   const [doctor, setDoctor] = useState([]);
-  const [nombre_doc, setNewDoc] = useState('')
+  const [nombre_doc, setNewDoc] = useState('');
 
+  const [error, setError] = useState(false);
+
+  const [conteo, setConteo] = useState([]);
 
   const [selected, setSelected] = useState(null);
 
@@ -43,6 +52,8 @@ function Inventario() {
   const [modalDoc, setModalDoc] = useState(false);
   const [modal, setModal] = useState(false);
   const [modal1, setModal1] = useState(false);
+  const [modal2, setModal2] = useState(false);
+  const toggle2 = () => { setModal2(!modal2) };
   const toggle = () => {
     setModal(!modal)
     if (modal === false) {
@@ -57,8 +68,6 @@ function Inventario() {
   const toggle1 = () => { setModal1(!modal1) };
   const toggleType = () => { setModalType(!modalType) };
   const toggleDoc = () => { setModalDoc(!modalDoc) };
-
-
 
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -75,13 +84,13 @@ function Inventario() {
     fetchData();
     fetchTypeData();
     fetchDoctorData();
+    fetchCounterData();
   }, []);
 
   const fetchData = async () => {
     try {
       const response = await axios.get('http://localhost/react/Saas/api/articulo.php/');
       setProducts(response.data);
-
     } catch (error) {
       console.log(error);
     }
@@ -91,7 +100,6 @@ function Inventario() {
     try {
       const response = await axios.get('http://localhost/react/Saas/api/tipo.php/');
       setTipos(response.data);
-
     } catch (error) {
       console.log(error);
     }
@@ -101,7 +109,15 @@ function Inventario() {
     try {
       const response = await axios.get('http://localhost/react/Saas/api/farmaceuta.php/');
       setDoctor(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  const fetchCounterData = async () => {
+    try {
+      const response = await axios.get('http://localhost/react/Saas/api/conteo.php/');
+      setConteo(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -151,38 +167,49 @@ function Inventario() {
             id_farmaceuta
           };
 
-          await axios.put(`http://localhost/react/Saas/api/articulo.php`, data)
-            .then(function (response) {
-              console.log(response.data);
-            });
-          fetchData();
-          toggle();
+          if (nombre == '' || id_tipo == '' || cantidad == '' || fecha_vencimiento == '' || imagen == '' || id_farmaceuta == '') {
+            setError(true)
+          } else {
+            await axios.put(`http://localhost/react/Saas/api/articulo.php`, data)
+              .then(function (response) {
+                console.log(response.data);
+              });
+            fetchData();
+            toggle();
+          }
         } catch (error) {
           console.log(error);
         }
       } else {
-        await axios.post(
-          // 'https://joseportillo.000webhostapp.com/saas/api/articulo.php'
-          'http://localhost/react/Saas/api/articulo.php'
-          , {
-            nombre,
-            id_tipo,
-            cantidad,
-            fecha_vencimiento,
-            imagen,
-            id_farmaceuta
-          })
-          .then(function (response) {
-            console.log(response.data);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-        fetchData();
-        toggle();
+
+        if (nombre == '' || id_tipo == '' || cantidad == '' || fecha_vencimiento == '' || imagen == '' || id_farmaceuta == '') {
+          setError(true)
+        } else {
+          await axios.post(
+            // 'https://joseportillo.000webhostapp.com/saas/api/articulo.php'
+            'http://localhost/react/Saas/api/articulo.php'
+            , {
+              nombre,
+              id_tipo,
+              cantidad,
+              fecha_vencimiento,
+              imagen,
+              id_farmaceuta
+            })
+            .then(function (response) {
+              console.log(response.data);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+          fetchData();
+          toggle();
+        }
+
       }
     } catch (error) {
       console.log(error);
+      setError(true)
     }
   }
 
@@ -226,11 +253,57 @@ function Inventario() {
     }
   }
 
+  const ChartComponent = ({ conteo }) => {
+    const dataForChart = conteo
+      .filter(item => item.id_producto === selectModal.id)
+      .map(item => ({ x: item.numero_compra, y: item.cantidad_producto }));
+
+    return (
+      <XYPlot height={300} width={400}>
+        <VerticalBarSeries data={dataForChart} />
+        <XAxis />
+        <YAxis />
+      </XYPlot>
+    );
+  };
+
+  // const products = conteo.map(item => item.id_producto);
+  // const quantities = conteo.map(item => item.cantidad_producto);
+
+  // const chartData = {
+  //   labels: products,
+  //   datasets: [
+  //     {
+  //       label: 'Cantidad comprada',
+  //       data: quantities,
+  //       backgroundColor: 'rgba(75,192,192,0.6)',
+  //       borderWidth: 1,
+  //     },
+  //   ],
+  // };
+
+  // const options = {
+  //   scales: {
+  //     y: {
+  //       beginAtZero: true,
+  //       type: 'linear', // Asegúrate de que el tipo de escala sea 'linear'
+  //     },
+  //   },
+  // };
+
+
+
+  // const dataForChart = conteo.map(conteo => (
+  //   1 == conteo.id_producto
+  //     ? { x: conteo.numero_compra, y: conteo.cantidad_producto }
+  //     : null
+  // ));
+
   return (
     <div className=" container">
 
       {/* Busqueda y Creación de Productos */}
-      <div className='row m-5 g-3 align-items-center'>
+      <div className='row  m-5 g-3 align-items-center'>
         <Input
           type="text"
           className="form-control"
@@ -238,20 +311,36 @@ function Inventario() {
           onChange={handleSearch}
           placeholder="Buscar Producto..."
         />
-        <button
-          type="button"
-          className="btn btn-primary "
-          onClick={toggle}
-        >
-          Agregar Producto
-        </button>
+        <ButtonGroup>
+          <Col md={5}>
+            <Button
+              type="button"
+              className="btn col-md-12 btn-primary "
+              onClick={toggle}
+            >
+              Agregar Producto
+            </Button>
+          </Col>
+          <Col md={2}></Col>
+          <Col md={5}>
+            <Link to='/BuyProduct'>
+              <Button
+                type="button"
+                className="btn col-md-12 btn-success "
+              >
+                Comprar
+              </Button>
+            </Link>
+          </Col>
+        </ButtonGroup>
       </div>
 
+
       {/* Tabla de Productos */}
-      <div className="row m-4">
+      <div className="cards row m-4">
         {filteredProduct.map(product => (
           <Col className="col">
-            <Card className='card align-items-center'
+            <Card className='card mt-2 align-items-center'
               onClick={() => {
                 setSelectModal(product);
                 toggle1();
@@ -277,6 +366,7 @@ function Inventario() {
       <Modal className='mt-5' isOpen={modal} size='xl' centered toggle={toggle}>
         <ModalHeader toggle={toggle}>
           {selected ? 'Editar Producto' : 'Agregar Producto'}
+
         </ModalHeader>
         <ModalBody>
           <div className="row g-3">
@@ -290,6 +380,7 @@ function Inventario() {
                 onChange={e => setNombre(e.target.value)}
                 className="form-control"
                 id="nombre"
+                placeholder="Nombre"
                 maxLength="45"
                 required
               />
@@ -305,9 +396,11 @@ function Inventario() {
                     name="tipo"
                     type="select"
                     value={id_tipo}
+                    placeholderText="Tipo"
+                    required
                     onChange={(e) => setTipo(e.target.value)}
                   >
-                    <option value={''}></option>
+                    <option >Selecciona un Tipo</option>
                     {tipos.map((tipo) => (
                       <option key={tipo.id} value={tipo.id}>
                         {tipo.tipo}
@@ -334,6 +427,7 @@ function Inventario() {
                 onChange={e => setCantidad(e.target.value)}
                 className="form-control"
                 id="cantidad"
+                placeholder="Cantidad"
                 pattern="^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}$"
                 required
               />
@@ -365,6 +459,7 @@ function Inventario() {
                 onChange={e => setImagen(e.target.value)}
                 className="form-control"
                 id="Imagen"
+                placeholder="https://static.xx.fbcdn.net/rsrc.php/y8/r/dF5SId3UHWd.svg"
                 required
               />
             </div>
@@ -379,9 +474,10 @@ function Inventario() {
                     name="farmaceuta"
                     type="select"
                     value={id_farmaceuta}
+                    required
                     onChange={(e) => setFarmaceuta(e.target.value)}
                   >
-                    <option value={''}></option>
+                    <option> Selecciona un Famaceuta</option>
                     {doctor.map((doc) => (
                       <option key={doc.id} value={doc.id}>
                         {doc.nombre_doc}
@@ -398,6 +494,7 @@ function Inventario() {
               </FormGroup>
             </div>
           </div>
+          {error && <Alert className="alert" color="danger">Todos los campos deben ser completados</Alert>}
         </ModalBody>
         <ModalFooter>
           <Button
@@ -493,6 +590,60 @@ function Inventario() {
           </Card>
         </ModalBody>
         <ModalFooter>
+          <Button
+            color="success"
+            id="PopoverLegacy1"
+            type="button"
+            onClick={toggle2}
+          >
+            Grafica
+          </Button>
+          {/* <UncontrolledPopover
+            placement="top"
+            target="PopoverLegacy1"
+            trigger="legacy"
+          >
+            <PopoverHeader className="align-item-centered">
+              Gráfica {selectModal.nombre}
+            </PopoverHeader>
+            <PopoverBody className="align-item-centered ">
+              <div style={{ height: '400px', width: '10em' }}>
+                <ChartComponent conteo={conteo} />
+              </div>
+            </PopoverBody>
+          </UncontrolledPopover> */}
+
+          <Modal className='mt-5' isOpen={modal2} size='md' centered toggle={toggle2}>
+            <ModalHeader toggle={toggle2} >Gráfica {selectModal.nombre}</ModalHeader>
+            <ModalBody className="align-item-center">
+              <div className="compra"
+                style={
+                  {
+                    fontSize: '12px',
+                    color: '#121212',
+                    fontWeight: 900,
+                    float: "left",
+                  }
+                }
+              >
+                N# Cantidad de ingreso
+              </div>
+              <ChartComponent conteo={conteo} />
+              <b
+                style={
+                  {
+                    fontSize: '12px',
+                    color: '#333333',
+                    float: "right",
+                    fontWeight: 900,
+                  }
+                }
+              >
+                N# Compra
+              </b>
+            </ModalBody>
+          </Modal>
+
           <Button
             color="danger"
             id="PopoverLegacy"
@@ -610,7 +761,6 @@ function Inventario() {
           </Button>
         </ModalFooter>
       </Modal>
-
 
     </div>
   )

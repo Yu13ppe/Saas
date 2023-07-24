@@ -1,0 +1,23 @@
+.cards{
+    background-color: #fff9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    padding: 40px;
+    margin: 20px;
+}
+
+.alert{
+    animation: fadeOut 10s forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+  
+    100% {
+      opacity: 0;
+      display: none;
+    }
+  }
+  

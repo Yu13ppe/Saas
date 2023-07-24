@@ -32,22 +32,22 @@ switch ($method) {
         $empleado = json_decode(file_get_contents('php://input'));
         $sql = "INSERT INTO proveedores(
             id, 
-            nombre, 
+            nombre_pro, 
             rif, 
-            telefono, 
+            telefono_pro, 
             correo
             ) 
             VALUES(
             null, 
-            :nombre, 
+            :nombre_pro, 
             :rif, 
-            :telefono, 
+            :telefono_pro, 
             :correo 
             )";
         $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':nombre', $empleado->nombre);
+        $stmt->bindParam(':nombre_pro', $empleado->nombre_pro);
         $stmt->bindParam(':rif', $empleado->rif);
-        $stmt->bindParam(':telefono', $empleado->telefono);
+        $stmt->bindParam(':telefono_pro', $empleado->telefono_pro);
         $stmt->bindParam(':correo', $empleado->correo);
 
         if ($stmt->execute()) {
@@ -61,15 +61,15 @@ switch ($method) {
     case "PUT":
         $empleado = json_decode(file_get_contents('php://input'));
         $sql = "UPDATE proveedores SET 
-        nombre= :nombre, 
+        nombre_pro= :nombre_pro, 
         rif =:rif, 
-        telefono= :telefono, 
+        telefono_pro= :telefono_pro, 
         correo= :correo 
         WHERE id = :id";
         $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':nombre', $empleado->nombre);
+        $stmt->bindParam(':nombre_pro', $empleado->nombre_pro);
         $stmt->bindParam(':rif', $empleado->rif);
-        $stmt->bindParam(':telefono', $empleado->telefono);
+        $stmt->bindParam(':telefono_pro', $empleado->telefono_pro);
         $stmt->bindParam(':correo', $empleado->correo);
 
         if ($stmt->execute()) {

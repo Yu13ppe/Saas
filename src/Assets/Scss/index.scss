@@ -1,14 +1,20 @@
-@use 'NavBar';
+@use 'Navbar';
 @use 'Login';
+@use 'Compras';
+@use 'Inventario';
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body{
+body {
     font-family: 'Noto Sans','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #dddddd;
+    background-image: url('../Images/Frame2.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
     overflow-x: hidden;
+    position: relative; /* Añadimos posición relativa para poder posicionar el div oscuro */
 }

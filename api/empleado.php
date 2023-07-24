@@ -32,25 +32,25 @@ switch ($method) {
         $empleado = json_decode(file_get_contents('php://input'));
         $sql = "INSERT INTO empleados(
             id, 
-            nombre, 
+            nombre_emp, 
             apellido, 
             cedula, 
-            telefono, 
+            telefono_emp, 
             direccion
             ) 
             VALUES(
             null, 
-            :nombre, 
+            :nombre_emp, 
             :apellido, 
             :cedula, 
-            :telefono, 
+            :telefono_emp, 
             :direccion 
             )";
         $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':nombre', $empleado->nombre);
+        $stmt->bindParam(':nombre_emp', $empleado->nombre_emp);
         $stmt->bindParam(':apellido', $empleado->apellido);
         $stmt->bindParam(':cedula', $empleado->cedula);
-        $stmt->bindParam(':telefono', $empleado->telefono);
+        $stmt->bindParam(':telefono_emp', $empleado->telefono_emp);
         $stmt->bindParam(':direccion', $empleado->direccion);
 
         if ($stmt->execute()) {
@@ -64,18 +64,18 @@ switch ($method) {
     case "PUT":
         $empleado = json_decode(file_get_contents('php://input'));
         $sql = "UPDATE empleados SET 
-                    nombre= :nombre, 
+                    nombre_emp = :nombre_emp, 
                     apellido =:apellido, 
                     cedula =:cedula, 
-                    telefono= :telefono, 
+                    telefono_emp = :telefono_emp, 
                     direccion= :direccion 
                     WHERE id = :id";
                     
         $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':nombre', $empleado->nombre);
+        $stmt->bindParam(':nombre_emp', $empleado->nombre_emp);
         $stmt->bindParam(':apellido', $empleado->apellido);
         $stmt->bindParam(':cedula', $empleado->cedula);
-        $stmt->bindParam(':telefono', $empleado->telefono);
+        $stmt->bindParam(':telefono_emp', $empleado->telefono_emp);
         $stmt->bindParam(':direccion', $empleado->direccion);
 
         if ($stmt->execute()) {

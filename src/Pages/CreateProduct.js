@@ -11,25 +11,6 @@ function CreateProduct() {
     const [imagen, setImagen] = useState('');
     const [id_farmaceuta, setFarmaceuta] = useState(Number);
 
-    // const handleEdit = product => {
-    //     setSelected(product);
-
-    //     setNombre(product.nombre);
-    //     setTipo(product.id_tipo);
-    //     setCantidad(product.cantidad);
-    //     setFecha(product.fecha_vencimiento);
-    //     setImagen(product.imagen);
-    //     setFarmaceuta(product.id_farmaceuta);
-    // };
-
-    // const handleDelete = async id => {
-    //     try {
-    //         await axios.delete(`https://joseportillo.000webhostapp.com/saas/api/articulo.php${id}/delete`);
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
-
     const handleSave = async () => {
         try {
                 await axios.post(

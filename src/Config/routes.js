@@ -2,9 +2,15 @@ import {Login} from '../Pages/Login'
 import {Inventario} from '../Pages/Inventario'
 import {CreateProduct} from '../Pages/CreateProduct'
 import { BuyProduct } from '../Pages/BuyProduct'
+import { InventarioG } from '../Pages/Inventario-G'
 
 
 const routes = [
+  {
+    title: 'InventarioG',
+    path: '/InventarioG',
+    component: InventarioG,
+  },
   {
     title: 'BuyProduct',
     path: '/BuyProduct',

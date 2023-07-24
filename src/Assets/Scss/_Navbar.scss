@@ -1,0 +1,63 @@
+.navbar{
+    background-color: #13684B;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    top: 0;
+    z-index: 1500;
+    width: 100%;
+    height: 60px;
+    min-width: 245px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+    .title1{
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .botonDesplegable{
+        background-color: #ddd;
+        margin-bottom: 10px;
+    }
+
+    .desplegable{
+        background-color: #0A4333;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        margin-left: -25px;
+        margin-right: -25px;
+        margin-bottom: -10px;
+        width: 100%;
+
+        .buttons {
+            color: #DFDFDF;
+            font-family: Segoe UI;
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 24px;
+            font-size: 24px;
+            line-height: 32px;
+            margin-bottom: 12px;
+            list-style: none;
+            box-shadow: inset 4px 4px 4px rgba(0, 0, 0, 0.25);
+        
+            .btn {
+                margin-top: 10px;
+                color: #DFDFDF;
+                width: 97%;
+                border-bottom: 1px solid #E5C034;
+                padding: 5px 10px;
+                text-align: start;
+
+                &:hover{
+                    background-color: #052111;
+                    color: #DFDFDF;
+                }
+            }
+        }
+    }
+}

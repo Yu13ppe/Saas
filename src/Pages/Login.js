@@ -24,7 +24,7 @@ function Login() {
         else if (user === 'gerente@saas.com') {
             // Si se encuentra el usuario, cambia de ventana
             history.push({
-                pathname: "/Inventario-G",
+                pathname: "/InventarioG",
             });
         }
         else {
