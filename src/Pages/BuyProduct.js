@@ -10,26 +10,19 @@ import {
   ModalFooter,
   Input,
   Col,
-  // Card,
-  // CardBody,
-  // CardSubtitle,
-  // CardTitle,
   FormGroup,
   Table
-  // UncontrolledPopover,
-  // PopoverHeader,
-  // PopoverBody
 } from 'reactstrap';
 
 function BuyProduct() {
-  const [id_producto, setIdProduct] = useState(Number)
-  const [cantidad_producto, setCantidadProduct] = useState(Number)
-  const [id_tipo, setIdType] = useState(Number)
+  const [id_producto, setIdProduct] = useState('')
+  const [cantidad_producto, setCantidadProduct] = useState('')
+  const [id_tipo, setIdType] = useState('')
   const [fecha_vencimiento_producto, setFechaVencimientoProduct] = useState('')
   const [fecha_compra, setFechaCompra] = useState('')
   const [lote, setLote] = useState('')
-  const [id_proveedor, setIdProveedor] = useState(Number)
-  const [id_empleado, setIdEmpleado] = useState(Number)
+  const [id_proveedor, setIdProveedor] = useState('')
+  const [id_empleado, setIdEmpleado] = useState('')
   const [productos, setProductos] = useState([])
   const [tipos, setTipos] = useState([])
   const [proveedores, setProveedores] = useState([])
@@ -74,7 +67,7 @@ function BuyProduct() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost/react/Saas/api/articulo.php/');
+      const response = await axios.get('https://lisandrohr.com/JosePortillo/articulo.php');
       setProductos(response.data);
 
     } catch (error) {
@@ -84,7 +77,7 @@ function BuyProduct() {
 
   const fetchData2 = async () => {
     try {
-      const response = await axios.get('http://localhost/react/Saas/api/tipo.php/');
+      const response = await axios.get('https://lisandrohr.com/JosePortillo/tipo.php');
       setTipos(response.data);
     } catch (error) {
       console.log(error);
@@ -94,7 +87,7 @@ function BuyProduct() {
 
   const fetchData3 = async () => {
     try {
-      const response = await axios.get('http://localhost/react/Saas/api/proveedores.php/');
+      const response = await axios.get('https://lisandrohr.com/JosePortillo/proveedores.php');
       setProveedores(response.data);
     } catch (error) {
       console.log(error);
@@ -103,7 +96,7 @@ function BuyProduct() {
 
   const fetchData4 = async () => {
     try {
-      const response = await axios.get('http://localhost/react/Saas/api/empleado.php/');
+      const response = await axios.get('https://lisandrohr.com/JosePortillo/empleado.php');
       setEmpleados(response.data);
     } catch (error) {
       console.log(error);
@@ -113,7 +106,7 @@ function BuyProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost/react/Saas/api/compras.php/', {
+      await axios.post('https://lisandrohr.com/JosePortillo/compras.php', {
         id_producto,
         cantidad_producto,
         id_tipo,
@@ -139,7 +132,7 @@ function BuyProduct() {
   const handleSubmitProveedor = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost/react/Saas/api/proveedores.php', {
+      await axios.post('https://lisandrohr.com/JosePortillo/proveedores.php', {
         nombre_pro,
         rif,
         telefono_pro,
@@ -161,7 +154,7 @@ function BuyProduct() {
   const handleSubmitEmpleado = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost/react/Saas/api/empleado.php', {
+      await axios.post('https://lisandrohr.com/JosePortillo/empleado.php', {
         nombre_emp,
         apellido,
         cedula,
@@ -180,26 +173,6 @@ function BuyProduct() {
       console.log(error);
     }
   };
-
-  // const renderPdf = () => (
-  //   <PDFDownloadLink document={<MyDocument />} fileName="facturacion.pdf">
-  //     {({ blob, url, loading, error }) =>
-  //       loading ? 'Cargando documento...' : 'Descargar PDF'
-  //     }
-  //   </PDFDownloadLink>
-  // );
-
-  // const styles = StyleSheet.create({
-  //   page: {
-  //     flexDirection: 'row',
-  //     backgroundColor: '#E4E4E4'
-  //   },
-  //   section: {
-  //     margin: 10,
-  //     padding: 10,
-  //     flexGrow: 1
-  //   }
-  // });
 
   const generateRandomNumber = () => {
     const randomNumber = Math.floor(1000000000 + Math.random() * 9000000000);
@@ -249,14 +222,14 @@ function BuyProduct() {
               </thead>
               <tbody>
                 <tr>
-                  <td scope="row">
+                  <td >
                     {productos.map((producto) => (
-                      producto.id == id_producto ? producto.nombre : ''
+                      producto.id === id_producto ? producto.nombre : ''
                     ))}
                   </td>
                   <td>
                     {tipos.map((tipo) => (
-                      tipo.id == id_tipo ? tipo.tipo : ''
+                      tipo.id === id_tipo ? tipo.tipo : ''
                     ))}
                   </td>
                   <td>
@@ -270,12 +243,12 @@ function BuyProduct() {
                   </td>
                   <td>
                     {proveedores.map((proveedor) => (
-                      proveedor.id == id_proveedor ? proveedor.nombre_pro : ''
+                      proveedor.id === id_proveedor ? proveedor.nombre_pro : ''
                     ))}
                   </td>
                   <td>
                     {empleados.map((empleado) => (
-                      empleado.id == id_empleado ? <>{empleado.nombre_emp} {empleado.apellido}</> : ''
+                      empleado.id === id_empleado ? <>{empleado.nombre_emp} {empleado.apellido}</> : ''
                     ))}
 
                   </td>
@@ -291,7 +264,6 @@ function BuyProduct() {
       </div>
     )
   }
-
 
   function generatePDF() {
     const codeSection = document.getElementById('factura');
@@ -324,7 +296,7 @@ function BuyProduct() {
       <div id="container" className="container">
         <div className="row g-3">
           <h1 
-          style={{ display: 'flex', justifyContent: 'center', marginTop: '1em', color: '#072', backgroundColor: '#fff', padding: '.5em', borderRadius: '10px', display: 'inline-block' }}
+          style={{ justifyContent: 'center', marginTop: '1em', color: '#072', backgroundColor: '#fff', padding: '.5em', borderRadius: '10px', display: 'inline-block' }}
           >Compras</h1>
           <form className="col-md-12 form-control" onSubmit={handleSubmit}>
             <FormGroup row>
@@ -599,39 +571,6 @@ function BuyProduct() {
           <Button color="secondary" onClick={toggle2}>Cerrar</Button>
         </ModalFooter>
       </Modal>
-
-
-      {/* {showPDF ? (
-        <PDFViewer>
-          <MyDocument data={{
-            id_producto,
-            cantidad_producto,
-            id_tipo,
-            fecha_vencimiento_producto,
-            fecha_compra,
-            lote,
-            id_proveedor,
-            id_empleado
-          }} />
-        </PDFViewer>
-      ) : 
-      (
-        <PDFDownloadLink document={<MyDocument data={{
-          id_producto,
-          cantidad_producto,
-          id_tipo,
-          fecha_vencimiento_producto,
-          fecha_compra,
-          lote,
-          id_proveedor,
-          id_empleado
-        }} />} fileName="facturacion.pdf">
-          {({ blob, url, loading, error }) =>
-            loading ? 'Cargando documento...' : 'Descargar PDF'
-          }
-        </PDFDownloadLink>
-      )
-      } */}
 
       {showPDF ? (
         MyDocument()

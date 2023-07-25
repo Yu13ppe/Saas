@@ -22,16 +22,14 @@ import {
 } from 'reactstrap';
 import { Link } from "react-router-dom";
 import { XYPlot, XAxis, YAxis, VerticalBarSeries } from 'react-vis';
-// import { Bar } from 'react-chartjs-2';
-import { Line } from 'react-chartjs-2';
 
 function Inventario() {
   const [nombre, setNombre] = useState('');
-  const [id_tipo, setTipo] = useState(Number);
-  const [cantidad, setCantidad] = useState(Number);
+  const [id_tipo, setTipo] = useState('');
+  const [cantidad, setCantidad] = useState('');
   const [fecha_vencimiento, setFecha] = useState('');
   const [imagen, setImagen] = useState('');
-  const [id_farmaceuta, setFarmaceuta] = useState(Number);
+  const [id_farmaceuta, setFarmaceuta] = useState('');
 
   const [tipos, setTipos] = useState([]);
   const [tipo, setNewType] = useState('');
@@ -89,7 +87,7 @@ function Inventario() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost/react/Saas/api/articulo.php/');
+      const response = await axios.get('https://lisandrohr.com/JosePortillo/articulo.php');
       setProducts(response.data);
     } catch (error) {
       console.log(error);
@@ -98,7 +96,7 @@ function Inventario() {
 
   const fetchTypeData = async () => {
     try {
-      const response = await axios.get('http://localhost/react/Saas/api/tipo.php/');
+      const response = await axios.get('https://lisandrohr.com/JosePortillo/tipo.php');
       setTipos(response.data);
     } catch (error) {
       console.log(error);
@@ -107,7 +105,7 @@ function Inventario() {
 
   const fetchDoctorData = async () => {
     try {
-      const response = await axios.get('http://localhost/react/Saas/api/farmaceuta.php/');
+      const response = await axios.get('https://lisandrohr.com/JosePortillo/farmaceuta.php');
       setDoctor(response.data);
     } catch (error) {
       console.log(error);
@@ -116,7 +114,7 @@ function Inventario() {
 
   const fetchCounterData = async () => {
     try {
-      const response = await axios.get('http://localhost/react/Saas/api/conteo.php/');
+      const response = await axios.get('https://lisandrohr.com/JosePortillo/conteo.php');
       setConteo(response.data);
     } catch (error) {
       console.log(error);
@@ -137,7 +135,7 @@ function Inventario() {
 
   const handleDelete = async id => {
     try {
-      await axios.delete(`http://localhost/react/Saas/api/articulo.php`, {
+      await axios.delete(`https://lisandrohr.com/JosePortillo/articulo.php`, {
         data: { id: id }
       })
         .then(function (response) {
@@ -167,10 +165,10 @@ function Inventario() {
             id_farmaceuta
           };
 
-          if (nombre == '' || id_tipo == '' || cantidad == '' || fecha_vencimiento == '' || imagen == '' || id_farmaceuta == '') {
+          if (nombre === '' || id_tipo === '' || cantidad === '' || fecha_vencimiento === '' || imagen === '' || id_farmaceuta === '') {
             setError(true)
           } else {
-            await axios.put(`http://localhost/react/Saas/api/articulo.php`, data)
+            await axios.put(`https://lisandrohr.com/JosePortillo/articulo.php`, data)
               .then(function (response) {
                 console.log(response.data);
               });
@@ -182,12 +180,11 @@ function Inventario() {
         }
       } else {
 
-        if (nombre == '' || id_tipo == '' || cantidad == '' || fecha_vencimiento == '' || imagen == '' || id_farmaceuta == '') {
+        if (nombre === '' || id_tipo === '' || cantidad === '' || fecha_vencimiento === '' || imagen === '' || id_farmaceuta === '') {
           setError(true)
         } else {
           await axios.post(
-            // 'https://joseportillo.000webhostapp.com/saas/api/articulo.php'
-            'http://localhost/react/Saas/api/articulo.php'
+            'https://lisandrohr.com/JosePortillo/articulo.php'
             , {
               nombre,
               id_tipo,
@@ -216,7 +213,7 @@ function Inventario() {
   const handleSaveType = async () => {
     try {
       await axios.post(
-        'http://localhost/react/Saas/api/tipo.php/',
+        'https://lisandrohr.com/JosePortillo/tipo.php',
         {
           tipo
         })
@@ -236,7 +233,7 @@ function Inventario() {
   const handleSaveDoc = async () => {
     try {
       await axios.post(
-        'http://localhost/react/Saas/api/farmaceuta.php/',
+        'https://lisandrohr.com/JosePortillo/farmaceuta.php',
         {
           nombre_doc
         })
@@ -266,38 +263,6 @@ function Inventario() {
       </XYPlot>
     );
   };
-
-  // const products = conteo.map(item => item.id_producto);
-  // const quantities = conteo.map(item => item.cantidad_producto);
-
-  // const chartData = {
-  //   labels: products,
-  //   datasets: [
-  //     {
-  //       label: 'Cantidad comprada',
-  //       data: quantities,
-  //       backgroundColor: 'rgba(75,192,192,0.6)',
-  //       borderWidth: 1,
-  //     },
-  //   ],
-  // };
-
-  // const options = {
-  //   scales: {
-  //     y: {
-  //       beginAtZero: true,
-  //       type: 'linear', // Asegúrate de que el tipo de escala sea 'linear'
-  //     },
-  //   },
-  // };
-
-
-
-  // const dataForChart = conteo.map(conteo => (
-  //   1 == conteo.id_producto
-  //     ? { x: conteo.numero_compra, y: conteo.cantidad_producto }
-  //     : null
-  // ));
 
   return (
     <div className=" container">

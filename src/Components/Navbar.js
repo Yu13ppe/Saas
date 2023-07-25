@@ -6,7 +6,6 @@ import {
   NavbarToggler,
   NavbarBrand,
   Modal,
-  Input,
   ModalHeader,
   ModalBody,
   ModalFooter,
@@ -72,7 +71,7 @@ function NavBar(props) {
 
   const fetchEmployData = async () => {
     try {
-      const response = await axios.get('http://localhost/react/Saas/api/empleado.php/');
+      const response = await axios.get('https://lisandrohr.com/JosePortillo/empleado.php');
       setEmpleados(response.data);
     } catch (error) {
       console.log(error);
@@ -81,55 +80,12 @@ function NavBar(props) {
 
   const fetchProveedorData = async () => {
     try {
-      const response = await axios.get('http://localhost/react/Saas/api/proveedores.php/');
+      const response = await axios.get('https://lisandrohr.com/JosePortillo/proveedores.php');
       setProveedores(response.data);
     } catch (error) {
       console.log(error);
     }
   };
-
-  const listEmpleados = () => {
-    return (
-      <div className="invoice-container">
-        <div id="listaEmpleados">
-          <div className="invoice-header">
-            <h1 className="invoice-number">Lista de Empleados</h1>
-          </div>
-          <div className="invoice-body">
-            <Table className="invoice-table"
-            >
-              <thead>
-                <tr>
-                  <th>
-                    Nombre
-                  </th>
-                  <th>
-                    Apellido
-                  </th>
-                  <th>
-                    Cedula
-                  </th>
-                  <th>
-                    Telefono
-                  </th>
-                  <th>
-                    Direccion
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  {empleados.map((empleado) => (
-                    <td key={empleado.id}>{empleado.nombre_emp}</td>
-                  ))}
-                </tr>
-              </tbody>
-            </Table>
-          </div>
-        </div>
-      </div >
-    )
-  }
 
   function generatePDF() {
     const codeSection = document.getElementById('listaEmpleados');
